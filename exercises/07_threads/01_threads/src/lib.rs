@@ -15,7 +15,13 @@
 use std::thread;
 
 pub fn sum(v: Vec<i32>) -> i32 {
-    todo!()
+    let left = v[..v.len()/2].to_vec(); // arrays must be fixed length at compile time
+    let right = v[v.len()/2..].to_vec(); // so use Vec<i32> instead
+    let thread1 = thread::spawn(move || -> i32 { // ownership must be moved
+        left.iter().sum()
+    });
+    let threadmain: i32 = right.iter().sum();
+    threadmain + thread1.join().unwrap()
 }
 
 #[cfg(test)]
